@@ -12,26 +12,18 @@ function pairingsTeams(numOfTeams, numOfGames) {
         // Initialize the list of teams
         var teams = Array(numOfTeams).fill().map((val,idx) => idx)
 
-        for(var i = 0; i < Math.round(numOfTeams/2); i++) {
-
-            var remainGames = numOfGames
-            while(remainGames > 0) {
-                var delta = remainGames - pairNum
-                var repeatNum = delta > 0 ? pairNum : remainGames
-                
-                for (var k = 0; k < repeatNum; k++) {
-                    pairs.push(`${teams[pairNum - k]},${teams[pairNum + k + 1]}`);
-                }
-
-                if (!isOddTeam) {
-                    pairs.push(`${teams[0]},${teams[numOfTeams - 1]}`)
-                }
-
-                // rotate team array
-                var last = teams.pop()
-                teams.unshift(last)
-                remainGames = delta
+        for (var i = 0; i < numOfGames; i++) {
+            for (var k = 0; k < pairNum; k++) {
+                pairs.push(`${teams[pairNum - k]},${teams[pairNum + k + 1]}`);
             }
+
+            if (!isOddTeam) {
+                pairs.push(`${teams[0]},${teams[numOfTeams - 1]}`)
+            }
+
+            // rotate team array
+            var last = teams.pop()
+            teams.unshift(last)
         }
     }
 
@@ -63,4 +55,4 @@ function pairingsTeams(numOfTeams, numOfGames) {
 
 // pairingsTeams(11,9);
 // pairingsTeams(4,11);
-pairingsTeams(10,4);
+pairingsTeams(10,5);
