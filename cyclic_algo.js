@@ -19,7 +19,7 @@ function pairingsTeams(numOfTeams, numOfGames) {
         var remainGames = numOfGames;
         while (remainGames > 0) {
             for (var k = 0; k < pairNum; k++) {
-                if (k % 2 == 0) {
+                if ((pairNum - k) % 2 != 0) {
                     home = teams[pairNum - k];
                     away = teams[pairNum + k + 1];
                 } else {
@@ -113,4 +113,4 @@ function pairingsTeams(numOfTeams, numOfGames) {
 
 // pairingsTeams(11,9);
 // pairingsTeams(4,11);
-pairingsTeams(8,11);
+pairingsTeams(7,11);
