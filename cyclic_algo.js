@@ -1,9 +1,10 @@
 
-function pairingsTeams(numOfTeams, numOfGames) {
+function pairingsTeams(numOfTeams, numOfRounds) {
 
     var pairs = [];
     var teamHAObj = {};
     var teamGObj = {};
+    var roundObj = {};
 
     var isOddTeam = numOfTeams % 2 == 0 ? false : true;
     var bye = -1;
@@ -12,12 +13,13 @@ function pairingsTeams(numOfTeams, numOfGames) {
         var pairNum = Math.floor( (numOfTeams - 1) / 2);
         
         // Initialize the list of teams
-        var teams = Array(numOfTeams).fill().map((val,idx) => idx);
-        if (isOddTeam) teams.push(bye);
+        var teams = Array(numOfTeams).fill().map((val,idx) => idx + 1);
+        // if (isOddTeam) teams.push(bye);
+        if (isOddTeam) teams.unshift(bye);
 
-        // for (var i = 0; i < numOfGames; i++) {
-        var remainGames = numOfGames;
-        while (remainGames > 0) {
+        for (var r = 1; r < numOfRounds+1; r++) {
+            var rndN = `round ${r}`;
+            roundObj[rndN] = [];
             for (var k = 0; k < pairNum; k++) {
                 if ((pairNum - k) % 2 != 0) {
                     home = teams[pairNum - k];
@@ -27,28 +29,27 @@ function pairingsTeams(numOfTeams, numOfGames) {
                     away = teams[pairNum - k];
                 }
                 
-                if (home === bye || away === bye)
-                    continue;
                 pairs.push(`${home},${away}`);
+                roundObj[rndN].push(`${home},${away}`);
             }
 
-            if (remainGames % 2 == 0){
-                home = teams[0];
-                away = teams[teams.length - 1];
-            } else {
-                home = teams[teams.length - 1];
-                away = teams[0];
-            }
+            if (!isOddTeam) {
+                if (r % 2 == 0){
+                    home = teams[0];
+                    away = teams[teams.length - 1];
+                } else {
+                    home = teams[teams.length - 1];
+                    away = teams[0];
+                }
 
-            if (home !== bye && away !== bye) {
                 pairs.push(`${home},${away}`);
-                remainGames -= 1;
+                roundObj[rndN].push(`${home},${away}`);
             }
+                
 
             // rotate team array
             var last = teams.pop();
             teams.splice(1, 0, last);
-            
         }
     }
 
@@ -101,10 +102,12 @@ function pairingsTeams(numOfTeams, numOfGames) {
     spliteHomeAway();
     gamesPerTeam();
 
-    console.log(">>>>>>>>>>>>>>>>>>>>>")
-    console.log(`teams: ${numOfTeams}, games: ${numOfGames}`)
-    console.log(">>>>>>>>>>>>>>>>>>>>>")
-    console.log("pairs", pairs);
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>");
+    console.log(`teams: ${numOfTeams}, rounds: ${numOfRounds}`);
+    console.log("Pairs >>>>>>>>>>>>>>>>>");
+    console.log(pairs);
+    console.log("Rounds Breakdown >>>>>>");
+    console.log(roundObj);
     console.log("Home/Away Breakdown >>>");
     console.log(teamHAObj);
     console.log("number of games with other teams per team >>>");
@@ -113,4 +116,5 @@ function pairingsTeams(numOfTeams, numOfGames) {
 
 // pairingsTeams(11,9);
 // pairingsTeams(4,11);
-pairingsTeams(7,11);
+// pairingsTeams(8,4);
+pairingsTeams(5,10);
